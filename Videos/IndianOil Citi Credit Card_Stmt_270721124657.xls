@@ -1,0 +1,335 @@
+
+
+
+
+
+
+
+<html>
+<head>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<META HTTP-EQUIV="expires" CONTENT="Tue, 11 Nov 1980 01:00:00 GMT">
+<style>
+td.ar {  font-family: Arial, Helvetica, sans-serif; font-size: 12px}
+td.ar3 {  font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold}
+td.arb {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold}
+td.vr2b {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold}
+td.ar1 {  font-family: Arial, Helvetica, sans-serif; font-size: 10px}
+</style>
+<script language="javascript" src="/infojsp/includes/activepath.js"></script>
+<script language="JavaScript" src="/infojsp/includes/validationfunction.js"></script>
+<script language="javascript">
+function citiServlet(keyValue){
+   startdate=document.forms[0].hidStartDummy.value
+   if(startdate=='Not Billed'){
+      document.forms[0].action="/infojsp/GenException/notbilled.htm"
+      document.forms[0].method="get"
+      document.forms[0].submit()
+   }else{
+
+         if(startdate.substring(3,5)=="01"){
+         month="12"
+         year=eval(startdate.substring(6,startdate.length)-1)
+         }else if(startdate.substring(3,4)=="0"){
+         month="0"+eval(startdate.substring(4,5)-1)
+         year=startdate.substring(6,startdate.length)
+         }else{
+           month=eval(startdate.substring(3,5)-1)
+          year=startdate.substring(6,startdate.length)
+         }
+        document.forms[0].dt.value = year+month
+        document.forms[0].hidaccinfo.value=formatAccount(document.forms[0].hidaccinfo.value);
+        document.forms[0].action="/servlets/DCGOutputServlet";
+        document.forms[0].method="post"
+        document.forms[0].codeType.value=keyValue
+        document.forms[0].submit();
+   }
+}
+
+function creditpay(){
+                document.forms[0].action="/infojsp/creditcardpayment/CCPaymentUserInput.jsp" 
+                document.forms[0].submit()
+}
+var strUserClass="";
+var strAllCards="";
+
+var NS6 = (document.getElementById&&!document.all) ? true : false;
+if(NS6){
+        strUserClass=CBOL_CHK_top.topUserClass;
+        strAllCards=CBOL_CHK_top.topAllCards;
+}
+else{
+if(top.CBOL){
+        strUserClass=top.CBOL.topUserClass;
+        strAllCards=top.CBOL.topAllCards;
+}else{
+        strUserClass=top.CONTROL.cbol.topUserClass;
+        strAllCards=top.CONTROL.cbol.topAllCards;
+}
+}
+function whatLeft(arg1){
+ if(arg1=="ODD"){
+            if(strUserClass=="5213")
+                    document.forms[0].action="/infojsp/payanyone/demanddraft/ccdemanddraftrequest.jsp";
+            else if(strUserClass=="5218"){
+                    document.forms[0].action="/servlets/DCGInputServlet";
+                    document.forms[0].Key.value="PTDR_AC";
+            }
+            else
+                    document.forms[0].action="/infojsp/payanyone/demanddraft/demanddraftrequest.jsp";
+  }else if(arg1=="PUB"){
+        document.forms[0].action="/infojsp/viewandpay/viewandpay.jsp";
+  }else if(arg1=="CLI"){
+        document.forms[0].Key.value="CSCL_IN";
+        document.forms[0].action="/servlets/DCGInputServlet";
+  }else if(arg1=="RLC"){
+        document.forms[0].Key.value="CSRL_S1";
+        document.forms[0].action="/servlets/DCGInputServlet";
+  }else if(arg1=="CAE"){
+        document.forms[0].Key.value="CSAD_S1";
+        document.forms[0].action="/servlets/DCGInputServlet";
+  }else if(arg1=="CTP"){
+        document.forms[0].Key.value="CSTP_S0";
+        document.forms[0].action="/servlets/DCGInputServlet";
+  }else if(arg1=="RAP"){
+        document.forms[0].Key.value="APIN_S1";
+        document.forms[0].action="/servlets/DCGInputServlet";
+  }else if(arg1=="SYC"){
+        document.forms[0].Key.value="CSSY_SI";
+        document.forms[0].action="/servlets/DCGInputServlet";
+  }else if(arg1=="VPR"){
+        document.forms[0].action="/servlets/DCGInputServlet";
+        document.forms[0].Key.value="PTPR_S1";
+  }else if(arg1=="SCD"){
+        if (strAllCards == null) strAllCards = formatAccount(document.forms[0].hidaccinfo.value);
+        document.forms[0].eaccno.value=strAllCards;
+        document.forms[0].codeType.value="CSSC_D1";
+        document.forms[0].action="/servlets/DCGOutputServlet";
+  }else if(arg1=="ACD"){
+        document.forms[0].Key.value="CSAC_S1"
+        document.forms[0].action="/servlets/DCGInputServlet"
+  }else if(arg1=="EMI"){
+         document.forms[0].action="/servlet/EMIServlet";
+  }else if(arg1=="SON"){
+        document.forms[0].method="get"
+		
+        document.forms[0].action="/IbsJsps/ston.jsp";
+		
+  }else if(arg1=="CAL"){
+         document.forms[0].action="/servlet/IntelliServlet";
+         document.forms[0].method="post"
+  }
+  else{
+        openWinLarge("Wrong selection");
+  }
+        document.forms[0].submit();
+}
+
+
+</script>
+
+</head>
+<body text="#000000" bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<form name="f1" method="post" >
+<input type="hidden" name="codeType" value=""/> 
+<input type="hidden" name="eaccno" value=""/>
+<input type="hidden" name="Key" value=""/>
+   <table width="605" cellpadding="0" cellspacing="1" border="0">
+   	   <tr> 
+         <td align="right"><img src="/infojsp/images/accsumhd.gif" width="605" height="18"/></td>
+       </tr>
+        <tr>
+         <td align="center" bgcolor="#006699" class="ar" ><b><font color="#FFFFFF"><span class="ar">
+          
+              Statement for the period: 12/07/2021 to 27/07/2021
+         
+             </font></span>
+             </b><span class="ar">
+             <font color="#FFFFFF">
+                    </font>
+             </span>
+
+         </td>
+         </tr>
+  </table>
+
+  <table width="605" border="0" cellpadding="0" cellspacing="1" bordercolor="red">
+
+    <tr align="center"> 
+      <td valign="top"> 
+        <table width="450" align="left" border="0" cellspacing="0" cellpadding="0" bordercolor="blue">
+          <tr> 
+           <td colspan="4" >
+            <table width="375" align="left" border="0" cellspacing="0" cellpadding="0" bordercolor="blue">
+             <tr> 
+             <td colspan="3" height="45" class="ar3">
+                <span class="ar3"><b>KUMAR,VINOD                   </b></span>
+             <br/>
+             <td colspan="1" >
+               <input type="hidden" name="hidaccinfo" value="4386 XXX5 XXXX 6275"> </input>
+               <input type="hidden" name="dt" value="" ></input>
+             </td>      
+          </tr>
+          <tr>
+             </td> <td colspan="4" height="45" class="ar3">
+             <span class="arb"><font color="#666666"><b>Card no. 4386 XXX5 XXXX 6275 </b> </b></font></span>
+             </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="arb" ><td></br>
+          </tr>
+   
+
+   
+
+	  <tr> 
+             <td class="ar" colspan="2">Current Balance</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+             
+                 6,866.62
+             
+             </td>
+	  </tr> 
+
+          <tr>
+             <td class="ar" colspan="2">Credit Limit</td>
+             <td class="ar" align="center">INR</td>
+             <td class="ar" align="right">
+             
+                 72,000.00
+             
+             </td>
+          </tr>
+            
+	  <tr> 
+             <td class="ar" colspan="2">Available Credit Limit</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+ 
+                 65,133.00
+             
+             </td>
+	  </tr> 
+
+          <tr>
+             <td class="ar" colspan="2"> Unbilled Purchases</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+            
+                 0.00
+             
+             </td>
+          </tr>
+		  <tr>
+             <td class="ar" colspan="2"> Unbilled Payments</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+            
+                 0.00
+             
+             </td>
+          </tr>
+
+          <tr>
+             <td class="ar" colspan="2" >Cash Limit</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+             
+                 43,000.00
+			 
+             </td>
+          </tr>
+
+          <tr>
+             <td class="ar" colspan="2">Available Cash Limit</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+	 
+                 43,000.00
+	 
+             </td>
+          </tr>
+
+          <tr>
+             <td class="ar" colspan="2">Payment Due Date</td>
+             <td class="ar" align="right"> </td>
+             <td class="ar" align="right">
+			 29/07/2021
+			 </td>
+          </tr>
+
+          <tr>
+             <td class="ar" colspan="2">Last Billed Date</td>
+             <td class="ar" align="right"> </td>
+             <td class="ar" align="right">
+			 12/07/2021
+			 </td>
+          </tr>
+
+          <tr>
+             <td class="ar" colspan="2">Last Billed Amount</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+             
+                 6,866.62
+			 
+             </td>
+          </tr>
+
+
+			<tr>
+             <td class="ar" colspan="2">Total Amount Due</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+         	 6,866.62
+             </td>
+          </tr>
+
+
+          <tr>
+             <td class="ar" colspan="2">Minimum Amount Due</td>
+             <td class="ar" align="center">INR </td>
+             <td class="ar" align="right">
+			343.33
+             </td>
+          </tr>
+
+
+     
+          <tr>
+            <td colspan="4" class="arb" ><td></br>
+          </tr>
+         </table>
+         </td>
+          </tr> 
+          <tr>
+          <td colspan="4">
+        
+            </td>
+            </tr>
+<tr>
+<td height="12" colspan="7"><img height="1" width="450" src="/infojsp/images/a1grey.gif"></td>
+</tr>
+
+<tr>
+<td height="12" colspan="7"><img height="1" width="450" src="/infojsp/images/a1grey.gif"></td>
+</tr>
+<tr>
+<td width="50"></td><td width="160"></td><td width="100"></td><td width="20"></td><td width="140"></td><td width="100"></td><td width="40"></td>
+</tr>
+</table>
+</td><input name="ProfileID" type="hidden" profileid="5213">
+
+</tr>
+<tr>
+<TD align="center"></TD>
+</tr>
+</table>
+
+</form>
+</body>
+</html>
+
